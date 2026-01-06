@@ -1,5 +1,6 @@
 package com.fulfilment.application.monolith.warehouses.adapters.database;
 
+import com.fulfilment.application.monolith.mapper.WarehouseMapper;
 import com.fulfilment.application.monolith.warehouses.domain.models.Warehouse;
 import com.fulfilment.application.monolith.warehouses.domain.ports.WarehouseStore;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -28,7 +29,19 @@ public class WarehouseRepository implements WarehouseStore, PanacheRepository<Db
 
   @Override
   public Warehouse findByBusinessUnitCode(String buCode) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    return find("businessUnitCode", buCode)
+            .firstResultOptional()
+            .map(WarehouseMapper::mapToWarehouse)
+            .orElse(null);
+  }
+
+  @Override
+  public boolean existsByBusinessUnitCode(String buCode) {
+    return find("businessUnitCode", buCode).firstResultOptional().isPresent();
+  }
+
+  @Override
+  public int countByLocation(String locationId) {
+    return Math.toIntExact(count("location", locationId));
   }
 }

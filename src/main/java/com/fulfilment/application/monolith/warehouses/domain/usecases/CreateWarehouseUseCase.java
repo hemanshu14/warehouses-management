@@ -3,22 +3,24 @@ package com.fulfilment.application.monolith.warehouses.domain.usecases;
 import com.fulfilment.application.monolith.warehouses.domain.models.Warehouse;
 import com.fulfilment.application.monolith.warehouses.domain.ports.CreateWarehouseOperation;
 import com.fulfilment.application.monolith.warehouses.domain.ports.WarehouseStore;
+import com.fulfilment.application.monolith.warehouses.validation.WarehouseValidator;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CreateWarehouseUseCase implements CreateWarehouseOperation {
 
-  private final WarehouseStore warehouseStore;
+    private final WarehouseStore warehouseStore;
+    private final WarehouseValidator validator;
 
-  public CreateWarehouseUseCase(WarehouseStore warehouseStore) {
-    this.warehouseStore = warehouseStore;
-  }
+    public CreateWarehouseUseCase(WarehouseStore warehouseStore, WarehouseValidator validator) {
+        this.warehouseStore = warehouseStore;
+        this.validator = validator;
+    }
 
-  @Override
-  public void create(Warehouse warehouse) {
-    // TODO implement this method
-
-    // if all went well, create the warehouse
-    warehouseStore.create(warehouse);
-  }
+    @Override
+    public void create(Warehouse warehouse) {
+        validator.validateForCreateWarehouse(warehouse);
+        // if all went well, create the warehouse
+        warehouseStore.create(warehouse);
+    }
 }

@@ -10,4 +10,8 @@ public interface WarehouseStore {
   void remove(Warehouse warehouse);
 
   Warehouse findByBusinessUnitCode(String buCode);
+
+  boolean existsByBusinessUnitCode(String businessUnitCode);
+
+  int countByLocation(String locationId);
 }
