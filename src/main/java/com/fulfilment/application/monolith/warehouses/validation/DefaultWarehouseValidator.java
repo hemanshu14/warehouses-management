@@ -22,23 +22,23 @@ public class DefaultWarehouseValidator implements WarehouseValidator {
 
     @Override
     public void validateForCreateWarehouse(Warehouse warehouse) {
-        Location location = locationResolver.resolveByIdentifier(warehouse.location);
-        if (warehouseStore.existsByBusinessUnitCode(warehouse.businessUnitCode)) {
-            throw new WarehouseValidationException("Warehouse with businessUnitCode '" + warehouse.businessUnitCode + "' already exists");
+        Location location = locationResolver.resolveByIdentifier(warehouse.getLocation());
+        if (warehouseStore.existsByBusinessUnitCode(warehouse.getBusinessUnitCode())) {
+            throw new WarehouseValidationException("Warehouse with businessUnitCode '" + warehouse.getBusinessUnitCode() + "' already exists");
         }
         if (location == null || location.identification == null) {
-            throw new InvalidLocationException("Invalid warehouse location: " + warehouse.location);
+            throw new InvalidLocationException("Invalid warehouse location: " + warehouse.getLocation());
         }
         int existingCount = warehouseStore.countByLocation(location.identification);
         if (existingCount >= location.maxNumberOfWarehouses) {
             throw new WarehouseValidationException("Cannot create new warehouse at location '" + location.identification + "'. Maximum number of warehouses reached.");
         }
-        if (warehouse.capacity > location.maxCapacity) {
-            throw new WarehouseValidationException("Warehouse capacity (" + warehouse.capacity + ") exceeds max capacity for location (" + location.maxCapacity + ")");
+        if (warehouse.getCapacity() > location.maxCapacity) {
+            throw new WarehouseValidationException("Warehouse capacity (" + warehouse.getCapacity() + ") exceeds max capacity for location (" + location.maxCapacity + ")");
         }
 
-        if (warehouse.stock > warehouse.capacity) {
-            throw new WarehouseValidationException("Warehouse stock (" + warehouse.stock + ") cannot exceed its capacity (" + warehouse.capacity + ")");
+        if (warehouse.getStock() > warehouse.getCapacity()) {
+            throw new WarehouseValidationException("Warehouse stock (" + warehouse.getStock() + ") cannot exceed its capacity (" + warehouse.getCapacity() + ")");
         }
     }
 
@@ -46,34 +46,34 @@ public class DefaultWarehouseValidator implements WarehouseValidator {
     @Override
     public void validateForReplaceWarehouse(Warehouse newWarehouse) {
 
-        Warehouse existing = warehouseStore.findByBusinessUnitCode(newWarehouse.businessUnitCode);
+        Warehouse existing = warehouseStore.findByBusinessUnitCode(newWarehouse.getBusinessUnitCode());
         if (existing == null) {
-            throw new WarehouseNotFoundException("Warehouse with businessUnitCode '" + newWarehouse.businessUnitCode + "' does not exist");
+            throw new WarehouseNotFoundException("Warehouse with businessUnitCode '" + newWarehouse.getBusinessUnitCode() + "' does not exist");
         }
 
-        Location location = locationResolver.resolveByIdentifier(newWarehouse.location);
+        Location location = locationResolver.resolveByIdentifier(newWarehouse.getLocation());
         if (location == null || location.identification == null) {
-            throw new InvalidLocationException("Invalid warehouse location: " + newWarehouse.location);
+            throw new InvalidLocationException("Invalid warehouse location: " + newWarehouse.getLocation());
         }
 
-        if (newWarehouse.capacity < existing.stock) {
-            throw new WarehouseValidationException("New warehouse capacity (" + newWarehouse.capacity + ") cannot accommodate existing stock (" + existing.stock + ")");
+        if (newWarehouse.getCapacity() < existing.getStock()) {
+            throw new WarehouseValidationException("New warehouse capacity (" + newWarehouse.getCapacity() + ") cannot accommodate existing stock (" + existing.getStock() + ")");
         }
 
-        if (!newWarehouse.stock.equals(existing.stock)) {
-            throw new WarehouseValidationException("New warehouse stock (" + newWarehouse.stock + ") must match existing warehouse stock (" + existing.stock + ")");
+        if (!newWarehouse.getStock().equals(existing.getStock())) {
+            throw new WarehouseValidationException("New warehouse stock (" + newWarehouse.getStock() + ") must match existing warehouse stock (" + existing.getStock() + ")");
         }
     }
 
     @Override
     public void validateForArchiveWarehouse(Warehouse warehouse) {
-        Warehouse existing = warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode);
+        Warehouse existing = warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode());
 
         if (existing == null) {
             throw new WarehouseNotFoundException("Warehouse does not exist");
         }
 
-        if (existing.archivedAt != null) {
+        if (existing.getArchivedAt() != null) {
             throw new WarehouseValidationException("Warehouse is already archived");
         }
     }

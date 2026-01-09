@@ -27,7 +27,7 @@ public class ReplaceWarehouseUseCaseTest {
     public void testUpdatingNonExistingWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseNotFoundException("WareHouse does not exist")).when(validator).validateForReplaceWarehouse(warehouse);
@@ -40,7 +40,7 @@ public class ReplaceWarehouseUseCaseTest {
     public void testUpdatingWarehouseAtInvalidLocation() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new InvalidLocationException("Invalid WareHouse location")).when(validator).validateForReplaceWarehouse(warehouse);
@@ -53,7 +53,7 @@ public class ReplaceWarehouseUseCaseTest {
     public void testUpdatingWarehouseCapacityMoreThanExistingStock() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("New warehouse capacity can not accommodate with existing stock")).when(validator).validateForReplaceWarehouse(warehouse);
@@ -66,7 +66,7 @@ public class ReplaceWarehouseUseCaseTest {
     public void testUpdatingWarehouseWithMoreStockDuringReplacement() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("New warehouse stock must match with existing stock")).when(validator).validateForReplaceWarehouse(warehouse);

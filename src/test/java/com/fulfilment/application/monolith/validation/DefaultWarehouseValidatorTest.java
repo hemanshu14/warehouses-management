@@ -35,12 +35,12 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForCreateWarehouseWithAlreadyExistingWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(null);
-        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(true);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(null);
+        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(true);
 
         //then
         assertThrows(WarehouseValidationException.class, () -> validator.validateForCreateWarehouse(warehouse));
@@ -50,12 +50,12 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForCreateWarehouseWithInvalidLocationOfWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(null);
-        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(false);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(null);
+        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(false);
 
         //then
         assertThrows(InvalidLocationException.class, () -> validator.validateForCreateWarehouse(warehouse));
@@ -65,15 +65,15 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForCreateWarehouseWithMaxNumberOfWarehouses() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
 
         Location location = new Location("1", 32, 30);
 
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(location);
-        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(false);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(location);
+        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(false);
         Mockito.when(warehouseStore.countByLocation(location.identification)).thenReturn(33);
 
         //then
@@ -84,16 +84,16 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForCreateWarehouseWithMaxCapacityOfWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
-        warehouse.capacity = 31;
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
+        warehouse.setCapacity(31);
 
         Location location = new Location("1", 32, 30);
 
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(location);
-        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(false);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(location);
+        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(false);
         Mockito.when(warehouseStore.countByLocation(location.identification)).thenReturn(33);
 
         //then
@@ -104,17 +104,17 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForCreateWarehouseWithStockOfWarehouseMoreThanItsCapacity() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
-        warehouse.capacity = 31;
-        warehouse.stock = 35;
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
+        warehouse.setCapacity(31);
+        warehouse.setStock(35);
 
         Location location = new Location("1", 32, 30);
 
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(location);
-        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(false);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(location);
+        Mockito.when(warehouseStore.existsByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(false);
         Mockito.when(warehouseStore.countByLocation(location.identification)).thenReturn(33);
 
         //then
@@ -125,11 +125,11 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForReplaceWarehouseWithNonExistingWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
 
         //when
-        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(null);
+        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(null);
 
         //then
         assertThrows(WarehouseNotFoundException.class, () -> validator.validateForReplaceWarehouse(warehouse));
@@ -139,12 +139,12 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForReplaceWarehouseWithInvalidLocationOfWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(null);
-        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(warehouse);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(null);
+        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(warehouse);
 
         //then
         assertThrows(InvalidLocationException.class, () -> validator.validateForReplaceWarehouse(warehouse));
@@ -154,21 +154,21 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForReplaceWarehouseWithNewWarehouseCapacityLessThanExistingStock() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
-        warehouse.stock = 32;
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
+        warehouse.setStock(32);
 
         Warehouse newWarehouse = new Warehouse();
-        newWarehouse.businessUnitCode = "1";
-        newWarehouse.location = "ncr";
-        newWarehouse.capacity = 31;
+        newWarehouse.setBusinessUnitCode("1");
+        newWarehouse.setLocation("ncr");
+        newWarehouse.setCapacity(31);
 
         Location location = new Location("1", 32, 30);
 
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(location);
-        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(warehouse);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(location);
+        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(warehouse);
 
         //then
         assertThrows(WarehouseValidationException.class, () -> validator.validateForReplaceWarehouse(newWarehouse));
@@ -178,22 +178,22 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForReplaceWarehouseWithNewWarehouseStockNotEqualToExistingStock() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
-        warehouse.stock = 32;
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
+        warehouse.setStock(32);
 
         Warehouse newWarehouse = new Warehouse();
-        newWarehouse.businessUnitCode = "1";
-        newWarehouse.location = "ncr";
-        newWarehouse.capacity = 31;
-        newWarehouse.stock = 33;
+        newWarehouse.setBusinessUnitCode("1");
+        newWarehouse.setLocation("ncr");
+        newWarehouse.setCapacity(31);
+        newWarehouse.setStock(33);
 
         Location location = new Location("1", 32, 30);
 
 
         //when
-        Mockito.when(locationResolver.resolveByIdentifier(warehouse.location)).thenReturn(location);
-        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(warehouse);
+        Mockito.when(locationResolver.resolveByIdentifier(warehouse.getLocation())).thenReturn(location);
+        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(warehouse);
 
         //then
         assertThrows(WarehouseValidationException.class, () -> validator.validateForReplaceWarehouse(newWarehouse));
@@ -203,11 +203,11 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForArchiveWarehouseWithNonExistingWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
 
         //when
-        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(null);
+        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(null);
 
         //then
         assertThrows(WarehouseNotFoundException.class, () -> validator.validateForArchiveWarehouse(warehouse));
@@ -217,12 +217,12 @@ public class DefaultWarehouseValidatorTest {
     public void testValidateForArchiveWarehouseWithAlreadyArchivedWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
-        warehouse.location = "ncr";
-        warehouse.archivedAt = ZonedDateTime.now();
+        warehouse.setBusinessUnitCode("1");
+        warehouse.setLocation("ncr");
+        warehouse.setArchivedAt(ZonedDateTime.now());
 
         //when
-        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.businessUnitCode)).thenReturn(warehouse);
+        Mockito.when(warehouseStore.findByBusinessUnitCode(warehouse.getBusinessUnitCode())).thenReturn(warehouse);
 
         //then
         assertThrows(WarehouseValidationException.class, () -> validator.validateForArchiveWarehouse(warehouse));

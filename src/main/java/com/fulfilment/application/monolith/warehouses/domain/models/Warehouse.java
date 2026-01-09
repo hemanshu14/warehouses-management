@@ -1,19 +1,29 @@
 package com.fulfilment.application.monolith.warehouses.domain.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.ZonedDateTime;
 
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Warehouse {
 
+  private Long wareHouseId;
   // unique identifier
-  public String businessUnitCode;
+  private String businessUnitCode;
 
-  public String location;
+  private String location;
 
-  public Integer capacity;
+  private Integer capacity;
 
-  public Integer stock;
+  private Integer stock;
 
-  public ZonedDateTime creationAt;
+  private ZonedDateTime creationAt;
 
-  public ZonedDateTime archivedAt;
+  private ZonedDateTime archivedAt;
 }

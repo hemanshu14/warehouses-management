@@ -26,7 +26,7 @@ public class ArchiveWarehouseUseCaseTest {
     public void testWhenWarehouseDoesNotExistAndTriedToArchiveIt() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseNotFoundException("WareHouse not found")).when(validator).validateForArchiveWarehouse(warehouse);
@@ -39,7 +39,7 @@ public class ArchiveWarehouseUseCaseTest {
     public void testWhenWarehouseAlreadyArchivedAndTriedToArchiveIt() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("Warehouse is already archived")).when(validator).validateForArchiveWarehouse(warehouse);

@@ -27,7 +27,7 @@ public class CreateWarehouseUseCaseTest {
     public void testCreatingAlreadyExistingWarehouse() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("WareHouse already exists")).when(validator).validateForCreateWarehouse(warehouse);
@@ -40,7 +40,7 @@ public class CreateWarehouseUseCaseTest {
     public void testCreatingWarehouseAtInvalidLocation() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new InvalidLocationException("Invalid WareHouse location")).when(validator).validateForCreateWarehouse(warehouse);
@@ -53,7 +53,7 @@ public class CreateWarehouseUseCaseTest {
     public void testCreatingWarehouseAtLocationWithMaxCountReached() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("Max number of warehouses reached at this location")).when(validator).validateForCreateWarehouse(warehouse);
@@ -66,7 +66,7 @@ public class CreateWarehouseUseCaseTest {
     public void testCreatingWarehouseAtLocationWithMaxCapacityReached() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("Max capacity of warehouses reached at this location")).when(validator).validateForCreateWarehouse(warehouse);
@@ -79,7 +79,7 @@ public class CreateWarehouseUseCaseTest {
     public void testCreatingWarehouseWithMaxStockReached() {
         //given
         Warehouse warehouse = new Warehouse();
-        warehouse.businessUnitCode = "1";
+        warehouse.setBusinessUnitCode("1");
 
         //when
         Mockito.doThrow(new WarehouseValidationException("Warehouse stock is more than the capacity")).when(validator).validateForCreateWarehouse(warehouse);
